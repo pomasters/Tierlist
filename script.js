@@ -32,7 +32,7 @@ let IMAGES_DATA = {};
 function generatePairsData(pairs) {
 
 	pairs.forEach(pair => {
-		const trainer = pair.trainerName || "";
+		const trainer = ((pair.trainerName === "N") ? "Natural" : pair.trainerName) || "";
 		const pokemon = pair.pokemonName || "";
 		const type = pair.pokemonType || "";
 		const role = pair.syncPairRole || "";
