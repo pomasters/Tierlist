@@ -1,0 +1,220 @@
+* { box-sizing: border-box; }
+
+body {
+	font-family: Tahoma, sans-serif;
+	background-image: url("https://pomasters.github.io/SyncPairsTracker/images/bg4.png");
+	background-attachment: fixed;
+	margin: 0;
+	padding: 0;
+}
+
+#main {
+	max-width: 1600px;
+	margin: 2% auto;
+}
+
+#tierlist {
+	display: flex;
+	flex-direction: column;
+	border-left: solid 1px #000;
+	border-right: solid 1px #000;
+}
+
+.tier {
+	display: flex;
+	flex-direction: row;
+	border-top: 1px solid #000;
+	background: #1A1A17;
+	min-height:  82px;
+}
+.tier:last-child {
+	border-bottom: solid 1px #000;
+}
+
+.tier, 
+.tier *,
+#imagelist,
+#imagelist * {
+	user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+.tier-title {
+	text-align: center;
+	align-content: center;
+	width: 128px;
+	min-width: 128px;
+	max-width: 128px;
+	padding: 12px;
+	outline: none;
+}
+
+.tier-images {
+	flex: 1;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.icon {
+	width: 81px;
+	object-fit: contain;
+	cursor: grab;
+}
+
+.tier-options {
+	display: flex;
+	flex-wrap: wrap;
+	background-color: #414141;
+}
+
+.tier-options > * {
+	cursor: pointer;
+	border: none;
+	background-color: transparent;
+	color: white;
+	width: 0px;
+	flex: 1 1 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.tier-options > *:hover {
+	background-color: #626262;
+}
+
+.tier-options i {
+	position: absolute;
+	pointer-events: none;
+}
+
+.tier-options select {
+	background-color: transparent;
+	border: none;
+	color: transparent;
+	outline: none;
+	width: 100%;
+	height: 100%;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+
+.tier-options select::-ms-expand {
+	display: none;
+}
+
+
+#imagelist {
+	background-image: url("https://pomasters.github.io/SyncPairsTracker/images/bg3.png");
+	bottom: 0;
+	z-index: 1;
+}
+
+.pinned {
+	position: sticky;
+}
+
+#options, #options > div { display: flex; }
+
+#searchBar {
+	width: 100%;
+	padding: 10px;
+	margin: 0;
+	outline: none;
+}
+
+.btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px 16px;
+	border: 2px solid #32788C;
+	border-right: 0;
+	background-color: white;
+	color: #48899A;
+	cursor: pointer;
+	outline: none;
+}
+
+.btn:hover {
+	background-color: #d3eaee;
+}
+
+.btn input, #import-input {
+	display: none;
+}
+
+.btn:has(input:checked) {
+	background-color: #48899A;
+	color: white;
+}
+
+.bi:before { font-size: 16px }
+
+
+#pool {
+	display: flex;
+	flex-wrap: wrap;
+	min-height: 82px;
+	max-height: 32vh;
+	overflow: overlay;
+	justify-content: center;
+	padding: 12px;
+}
+
+#modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.9);
+	justify-content: center;
+	align-items: center;
+}
+#close-btn {
+	position: absolute;
+	top: 32px;
+	right: 32px;
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+}
+#close-btn:before {
+	font-size: 40px;
+}
+#screenshot {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#screenshot canvas {
+	width: auto !important;
+	height: auto;
+	max-width: 90%;
+	max-height: 80% !important;
+}
+
+.sortable-ghost { opacity: 0.4;  }
+
+
+@media only screen and (max-width: 1024px) {
+	#pool { justify-content: left; }
+	.tier-title {
+		width: 96px;
+		min-width: 96px;
+		max-width: 96px;
+	}
+	#options { flex-wrap: wrap; justify-content: space-between; }
+
+	#screenshot canvas {
+		width: 80% !important;
+		height: auto !important;
+	}
+}
