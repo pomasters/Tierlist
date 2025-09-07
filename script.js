@@ -59,7 +59,7 @@ function loadIcons(images) {
 			pair.images.forEach(imgPath => {
 				const fileName = imgPath.split("/").pop();
 
-				const alreadyInTL = document.querySelector(`.tier .tier-images img[src$="${fileName}"]`);
+				const alreadyInTL = document.querySelector(`.tier .tier-images img[src$="${encodeURIComponent(fileName)}"]`);
 				if(alreadyInTL) return;
 
 				const img = document.createElement("img");
