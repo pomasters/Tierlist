@@ -94,14 +94,22 @@ function search() {
 		return;
 	}
 
-			const groups = query.split(/\s*,\s*/).filter(g => g.length > 0);
+	const groups = query.split(/\s*,\s*/).filter(g => g.length > 0);
 
 	allIcons.forEach(icon => {
 		const fullText = icon.dataset.tags;
 
 		const matchesGroup = groups.some(group => {
 			const words = group.split(/\s+/);
-			return words.every(word => fullText.includes(word));
+
+			return words.every(word => {
+				if(word.startsWith("-")) {
+					const negWord = word.slice(1);
+					return !fullText.includes(negWord);
+				} else {
+					return fullText.includes(word);
+				}
+			});
 		});
 
 		icon.style.display = matchesGroup ? "" : "none";
