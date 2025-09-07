@@ -314,7 +314,7 @@ function importState(state) {
 				const img = document.createElement("img");
 				img.src = "https://pomasters.github.io/SyncPairsTracker/icons/" + fileName;
 				img.className = "icon";
-				img.dataset.tags = IMAGES_DATA[fileName].join(" ").toLowerCase();
+				img.dataset.tags = (IMAGES_DATA[decodeURIComponent(fileName)] || []).join(" ").toLowerCase();
 				tierImages.appendChild(img);
 			});
 		}
