@@ -66,6 +66,7 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 	background-color: #414141;
+	align-content: center;
 }
 
 .tier-options > * {
@@ -78,6 +79,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	min-height: 27px;
 }
 
 .tier-options > *:hover {
