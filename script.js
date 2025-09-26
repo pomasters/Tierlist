@@ -160,35 +160,35 @@ function renderTiers() {
 		options.className = "tier-options";
 		options.setAttribute("data-html2canvas-ignore", "true");
 		options.innerHTML = `
-					<button class="bi bi-chevron-up"></button>
-					<button class="bi bi-arrow-bar-up"></button>
-					<div>
-						<i class="bi bi-palette"></i>
-						<select>
-							${COLORS.map(c => `<option value="${c}" ${ c==tier.color ? "selected" : ""} style="background:${c};color:${c}">${c}</option>`).join("")}
-						</select>
-					</div>
-					<button class="bi bi-trash3"></button>
-					<button class="bi bi-chevron-down"></button>
+			<button class="bi bi-chevron-up"></button>
+				<button class="bi bi-arrow-bar-up"></button>
+				<div>
+					<i class="bi bi-palette"></i>
+					<select>
+						${COLORS.map(c => `<option value="${c}" ${ c==tier.color ? "selected" : ""} style="background:${c};color:${c}">${c}</option>`).join("")}
+					</select>
+				</div>
+				<button class="bi bi-trash3"></button>
+				<button class="bi bi-chevron-down"></button>
 			<button class="bi bi-arrow-bar-down"></button>`;
 
-			const [btnUp, btnAddAbove, btnPalette, btnTrash, btnDown, btnAddBelow] = options.children;
+		const [btnUp, btnAddAbove, btnPalette, btnTrash, btnDown, btnAddBelow] = options.children;
 
-			btnUp.addEventListener("click", () => moveTier(tier.id, -1));
-			btnAddAbove.addEventListener("click", () => addTierAbove(tier.id));
-			btnPalette.querySelector("select").addEventListener("change", e => recolorTier(tier.id, e.target));
-			btnTrash.addEventListener("click", () => removeTier(tier.id));
-			btnDown.addEventListener("click", () => moveTier(tier.id, 1));
-			btnAddBelow.addEventListener("click", () => addTierBelow(tier.id));
+		btnUp.addEventListener("click", () => moveTier(tier.id, -1));
+		btnAddAbove.addEventListener("click", () => addTierAbove(tier.id));
+		btnPalette.querySelector("select").addEventListener("change", e => recolorTier(tier.id, e.target));
+		btnTrash.addEventListener("click", () => removeTier(tier.id));
+		btnDown.addEventListener("click", () => moveTier(tier.id, 1));
+		btnAddBelow.addEventListener("click", () => addTierBelow(tier.id));
 
-			div.appendChild(title);
-			div.appendChild(images);
-			div.appendChild(options);
+		div.appendChild(title);
+		div.appendChild(images);
+		div.appendChild(options);
 
-			TIERLIST.appendChild(div);
+		TIERLIST.appendChild(div);
 
-			new Sortable(images, { group:"shared", animation:0, ghostClass:"sortable-ghost", onEnd:saveToLocalStorage });
-		});
+		new Sortable(images, { group:"shared", animation:0, ghostClass:"sortable-ghost", onEnd:saveToLocalStorage });
+	});
 
 	saveToLocalStorage()
 }
@@ -255,14 +255,17 @@ document.getElementById("pinImagelist").addEventListener("click", () => {
 
 document.getElementById("capture-btn").addEventListener("click", () => {
 	html2canvas(TIERLIST, {scale:2,width:Math.floor(1200),windowWidth:1200,windowHeight:800,scrollX:0,scrollY:0}).then(canvas => {
-		document.getElementById("modal").style.display = "flex";
+		document.getElementById("modal").classList.remove("hide");
+		document.getElementById("screenshot").classList.remove("hide");
 		document.getElementById("screenshot").innerHTML = "";
 		document.getElementById("screenshot").appendChild(canvas)
 	});
 });
 
+
 document.getElementById("close-btn").addEventListener("click", () => {
-	document.getElementById("modal").style.display = "none";
+	document.getElementById("modal").classList.add("hide");
+	document.getElementById("screenshot").classList.add("hide");
 });
 
 
