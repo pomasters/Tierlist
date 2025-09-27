@@ -250,6 +250,7 @@ function moveTier(id, d) {
 
 document.getElementById("pinImagelist").addEventListener("click", () => {
 	document.getElementById("imagelist").classList.toggle("pinned");
+	localStorage.setItem("tierListImagePinned", document.getElementById("pinImagelist").checked);
 });
 
 
@@ -334,6 +335,11 @@ function importState(state) {
 function readLocalStorage() {
 	const saved = localStorage.getItem("tierlistState");
 	if(!saved) return null;
+
+	if(localStorage.getItem("tierListImagePinned") === "true") {
+		document.getElementById("pinImagelist").checked = true;
+		document.getElementById("imagelist").classList.add("pinned");
+	}
 
 	try {
 		return JSON.parse(saved);
