@@ -37,12 +37,20 @@ function generatePairsData(pairs) {
 		const type = pair.pokemonType || "";
 		const role = pair.syncPairRole || "";
 		const region = pair.syncPairRegion || "";
+		const releaseDate = pair.releaseDate || "";
+		const acquisition = pair.syncPairAcquisition.toLowerCase()
+							.replace(" / general pool", "")
+							.replace(" scout", "")
+							.replace(" exchange", "")
+							.replace(": pml arc", "")
+							.replace("é", "e")
+							.replace(" ", "") || "";
 
 		if(pair.images && pair.images.length > 0) {
 			pair.images.forEach(imgPath => {
 				const fileName = imgPath.split("/").pop();
 				const rarity = fileName.split("_").pop().replace(".png","star");
-				IMAGES_DATA[fileName] = [trainer, pokemon, type, role, region, rarity];
+				IMAGES_DATA[fileName] = [trainer, pokemon, type, role, region, rarity, releaseDate, acquisition];
 			});
 		}
 	});
