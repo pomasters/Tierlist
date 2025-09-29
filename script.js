@@ -30,59 +30,60 @@ let IMAGES_DATA = {};
 
 
 function generatePairsData(pairs) {
+	for(const pair of pairs) {
+		if(!pair.images?.length) continue;
 
-	pairs.forEach(pair => {
-		const trainer = ((pair.trainerName === "N") ? "Natural" : pair.trainerName) || "";
+		const trainer = pair.trainerName === "N" ? "Natural" : (pair.trainerName || "");
 		const pokemon = pair.pokemonName || "";
 		const type = pair.pokemonType || "";
 		const role = pair.syncPairRole || "";
 		const region = pair.syncPairRegion || "";
 		const releaseDate = pair.releaseDate || "";
-		const acquisition = pair.syncPairAcquisition.toLowerCase()
-							.replace(" / general pool", "")
-							.replace(" scout", "")
-							.replace(" exchange", "")
-							.replace(": pml arc", "")
-							.replace("é", "e")
-							.replace(" ", "") || "";
 
-		if(pair.images && pair.images.length > 0) {
-			pair.images.forEach(imgPath => {
-				const fileName = imgPath.split("/").pop();
-				const rarity = fileName.split("_").pop().replace(".png","star");
-				IMAGES_DATA[fileName] = [trainer, pokemon, type, role, region, rarity, releaseDate, acquisition];
-			});
+		const acquisition = (pair.syncPairAcquisition || "")
+							.toLowerCase()
+							.replaceAll(/ \/ general pool| scout| exchange|: pml arc/g, "")
+							.replaceAll("é", "e")
+							.replaceAll(" ", "");
+
+		for(const imgPath of pair.images) {
+			const fileName = imgPath.split("/").at(-1);
+			const rarity = fileName.split("_").at(-1).replace(".png", "star");
+
+			IMAGES_DATA[fileName] = [trainer, pokemon, type, role, region, rarity, releaseDate, acquisition];
 		}
-	});
+	}
 }
+
 
 
 function loadIcons(images) {
 	POOL.innerHTML = "";
 
-	images.forEach(pair => {
+	const existingTL = new Set([...document.querySelectorAll(".tier .tier-images img")].map(img => decodeURIComponent(img.src.split("/").at(-1))));
 
-		if(pair.images && pair.images.length > 0) {
+	let html = "";
 
-			pair.images.forEach(imgPath => {
-				const fileName = imgPath.split("/").pop();
+	for(const pair of images) {
+		if(!pair.images?.length) continue;
+		if(pair.trainerName === "Player" && pair.pokemonName === "Alcremie" && pair.releaseDate === "2025-02-11") continue;
 
-				const alreadyInTL = document.querySelector(`.tier .tier-images img[src$="${encodeURIComponent(fileName)}"]`);
-				if(alreadyInTL) return;
+		for(const imgPath of pair.images) {
+			const fileName = imgPath.split("/").at(-1);
 
-				const img = document.createElement("img");
-				img.src = "https://pomasters.github.io/SyncPairsTracker/icons/" + fileName;
-				img.className = "icon";
-				img.dataset.tags = IMAGES_DATA[fileName].join(" ").toLowerCase();
+			if (existingTL.has(fileName)) continue;
 
-				POOL.appendChild(img);
-			});
+			const tags = (IMAGES_DATA[fileName] || []).join(" ").toLowerCase();
 
+			html += `<img src="https://pomasters.github.io/SyncPairsTracker/icons/${fileName}" class="icon" data-tags="${tags}">`;
 		}
-	});
+	}
 
-	new Sortable(POOL, { group:"shared", animation:0, ghostClass:"sortable-ghost", onEnd:saveToLocalStorage });
+	POOL.innerHTML = html;
+
+	new Sortable(POOL, { group: "shared", animation: 0, ghostClass: "sortable-ghost", onEnd: saveToLocalStorage	});
 }
+
 
 
 function search() {
@@ -180,23 +181,23 @@ function renderTiers() {
 				<button class="bi bi-chevron-down"></button>
 			<button class="bi bi-arrow-bar-down"></button>`;
 
-		const [btnUp, btnAddAbove, btnPalette, btnTrash, btnDown, btnAddBelow] = options.children;
+			const [btnUp, btnAddAbove, btnPalette, btnTrash, btnDown, btnAddBelow] = options.children;
 
-		btnUp.addEventListener("click", () => moveTier(tier.id, -1));
-		btnAddAbove.addEventListener("click", () => addTierAbove(tier.id));
-		btnPalette.querySelector("select").addEventListener("change", e => recolorTier(tier.id, e.target));
-		btnTrash.addEventListener("click", () => removeTier(tier.id));
-		btnDown.addEventListener("click", () => moveTier(tier.id, 1));
-		btnAddBelow.addEventListener("click", () => addTierBelow(tier.id));
+			btnUp.addEventListener("click", () => moveTier(tier.id, -1));
+			btnAddAbove.addEventListener("click", () => addTierAbove(tier.id));
+			btnPalette.querySelector("select").addEventListener("change", e => recolorTier(tier.id, e.target));
+			btnTrash.addEventListener("click", () => removeTier(tier.id));
+			btnDown.addEventListener("click", () => moveTier(tier.id, 1));
+			btnAddBelow.addEventListener("click", () => addTierBelow(tier.id));
 
-		div.appendChild(title);
-		div.appendChild(images);
-		div.appendChild(options);
+			div.appendChild(title);
+			div.appendChild(images);
+			div.appendChild(options);
 
-		TIERLIST.appendChild(div);
+			TIERLIST.appendChild(div);
 
-		new Sortable(images, { group:"shared", animation:0, ghostClass:"sortable-ghost", onEnd:saveToLocalStorage });
-	});
+			new Sortable(images, { group:"shared", animation:0, ghostClass:"sortable-ghost", onEnd:saveToLocalStorage });
+		});
 
 	saveToLocalStorage()
 }
