@@ -16,19 +16,23 @@
 
 		<div id="imagelist">
 			<div id="options">
-				<div>
+				<div id="options1">
+					<label class="btn bi bi-pin-angle" title="Pin images"><input type="checkbox" id="pinImagelist"></label>
+					<label class="btn bi bi-search" title="Also search in tier list"><i class="bi bi-list-columns-reverse"></i><input type="checkbox" id="searchInTierlist"></label>
+					<input type="text" id="searchBar" placeholder='Search : trainer / Pokémon / type / role / region / basestar...3star...EXstar / yyyy-mm-dd / acquisition    |    fire tech = fireANDtech / fire,tech = fireORtech / -fire = NOTfire' spellcheck="false">
+				</div>
+				<div id="options2">
 					<button id="capture-btn" class="btn bi bi-image" title="Create an image"></button>
 					<button id="export-btn" class="btn bi bi-floppy" title="Export tierlist"></button>
 					<button id="import-btn" class="btn bi bi-folder2-open" title="Import tierlist"></button>
 					<input id="import-input" class="btn" type="file" accept="application/json">
 					<button id="reset-btn" class="btn bi bi-arrow-clockwise" title="Reset tier list"></button>
-				</div>
 
-				<div>
-					<label class="btn bi bi-pin-angle" title="Pin images"><input type="checkbox" id="pinImagelist"></label>
-					<label class="btn bi bi-search" title="Also search in tier list"><i class="bi bi-list-columns-reverse"></i><input type="checkbox" id="searchInTierlist"></label>
+					<button id="savestate-btn" class="btn bi bi-bookmark-plus" title="Save state"></button>
+					<select id="stateselector"></select>
+					<!--<button id="loadstate-btn" class="btn bi bi-folder2-open" title="Load state"></button>-->
+					<button id="deletestate-btn" class="btn bi bi-bookmark-x" title="Delete state"></button>
 				</div>
-				<input type="text" id="searchBar" placeholder='Trainer, Pokémon, type, role, region, rarity (3star, ..., EXstar), date (yyyy-mm-dd), acquisition&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;"fire tech" = fireANDtech&nbsp;&nbsp;"fire,tech" = fireORtech&nbsp;&nbsp;"-fire" = NOTfire' spellcheck="false">
 			</div>
 
 			<div id="pool"></div>  

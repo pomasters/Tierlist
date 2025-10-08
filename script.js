@@ -46,12 +46,14 @@ function generatePairsData(pairs) {
 							.replaceAll("é", "e")
 							.replaceAll(" ", "");
 
-		for(const imgPath of pair.images) {
+		pair.images.forEach((imgPath, index) => {
 			const fileName = imgPath.split("/").at(-1);
 			const rarity = fileName.split("_").at(-1).replace(".png", "star");
 
-			IMAGES_DATA[fileName] = [trainer, pokemon, type, role, region, rarity, releaseDate, acquisition];
-		}
+			const baseStar = index === 0 ? "basestar" : "";
+
+			IMAGES_DATA[fileName] = [trainer, pokemon, type, role, region, rarity, releaseDate, acquisition, baseStar].filter(Boolean);
+		});
 	}
 }
 
@@ -71,7 +73,7 @@ function loadIcons(images) {
 		for(const imgPath of pair.images) {
 			const fileName = imgPath.split("/").at(-1);
 
-			if (existingTL.has(fileName)) continue;
+			if(existingTL.has(fileName)) continue;
 
 			const tags = (IMAGES_DATA[fileName] || []).join(" ").toLowerCase();
 
@@ -181,23 +183,23 @@ function renderTiers() {
 				<button class="bi bi-chevron-down"></button>
 			<button class="bi bi-arrow-bar-down"></button>`;
 
-			const [btnUp, btnAddAbove, btnPalette, btnTrash, btnDown, btnAddBelow] = options.children;
+		const [btnUp, btnAddAbove, btnPalette, btnTrash, btnDown, btnAddBelow] = options.children;
 
-			btnUp.addEventListener("click", () => moveTier(tier.id, -1));
-			btnAddAbove.addEventListener("click", () => addTierAbove(tier.id));
-			btnPalette.querySelector("select").addEventListener("change", e => recolorTier(tier.id, e.target));
-			btnTrash.addEventListener("click", () => removeTier(tier.id));
-			btnDown.addEventListener("click", () => moveTier(tier.id, 1));
-			btnAddBelow.addEventListener("click", () => addTierBelow(tier.id));
+		btnUp.addEventListener("click", () => moveTier(tier.id, -1));
+		btnAddAbove.addEventListener("click", () => addTierAbove(tier.id));
+		btnPalette.querySelector("select").addEventListener("change", e => recolorTier(tier.id, e.target));
+		btnTrash.addEventListener("click", () => removeTier(tier.id));
+		btnDown.addEventListener("click", () => moveTier(tier.id, 1));
+		btnAddBelow.addEventListener("click", () => addTierBelow(tier.id));
 
-			div.appendChild(title);
-			div.appendChild(images);
-			div.appendChild(options);
+		div.appendChild(title);
+		div.appendChild(images);
+		div.appendChild(options);
 
-			TIERLIST.appendChild(div);
+		TIERLIST.appendChild(div);
 
-			new Sortable(images, { group:"shared", animation:0, ghostClass:"sortable-ghost", onEnd:saveToLocalStorage });
-		});
+		new Sortable(images, { group:"shared", animation:0, ghostClass:"sortable-ghost", onEnd:saveToLocalStorage });
+	});
 
 	saveToLocalStorage()
 }
@@ -336,6 +338,9 @@ function importState(state) {
 		renderTiers();
 	}
 
+	document.getElementById("searchBar").value = "";
+	search();
+
 	loadIcons(SYNCPAIRS);
 
 	saveToLocalStorage();
@@ -382,7 +387,6 @@ document.getElementById("import-input").addEventListener("change", (event) => {
 	reader.readAsText(file);
 });
 
-
 document.getElementById("reset-btn").addEventListener("click", () => {
 	if(confirm("Do you really want to reset the tier list?")) {
 		importState(DEFAULT_TIERLIST)
@@ -391,5 +395,90 @@ document.getElementById("reset-btn").addEventListener("click", () => {
 
 
 
+function getAllStates() {
+	const saved = localStorage.getItem("tierlistSaves");
+
+	return saved ? JSON.parse(saved) : {};
+}
+
+function saveState(name, state) {
+	const all = getAllStates();
+
+	all[name] = state;
+	localStorage.setItem("tierlistSaves", JSON.stringify(all));
+
+	updateStateSelector(name);
+}
+
+function loadState(name) {
+	const all = getAllStates();
+
+	const state = all[name];
+	importState(state);
+
+	updateStateSelector(name);
+}
+
+function deleteState(name) {
+	const all = getAllStates();
+
+	delete all[name];
+	localStorage.setItem("tierlistSaves", JSON.stringify(all));
+
+	updateStateSelector();
+}
+
+function updateStateSelector(current="") {
+	const selector = document.getElementById("stateselector");
+	if(!selector) return;
+
+	const all = getAllStates();
+
+	selector.innerHTML = `<option value="">— Saves —</option>`;
+	for(const name of Object.keys(all)) {
+		const option = document.createElement("option");
+		option.value = name;
+		option.textContent = name;
+		if(name === current) option.selected = true;
+		selector.appendChild(option);
+	}
+}
+
+
+document.getElementById("savestate-btn").addEventListener("click", () => {
+	const name = prompt("Enter a tierlist name", "").trim().slice(0, 24);
+	if(!name) {
+		alert("Invalid tierlist name");
+		return;
+	}
+
+	saveState(name, exportState());
+	alert(`Tierlist "${name}" saved`);
+});
+
+/*document.getElementById("loadstate-btn").addEventListener("click", () => {
+	const name = document.getElementById("stateselector").value;
+	if(!confirm(`Load tierlist "${name}" ?`)) return;
+
+	loadState(name);
+});*/
+
+document.getElementById("stateselector").addEventListener("change", (e) => {
+	const name = e.target.value?.trim();
+	if(!name) return;
+
+	loadState(name);
+});
+
+document.getElementById("deletestate-btn").addEventListener("click", () => {
+	const name = document.getElementById("stateselector").value;
+	if(!confirm(`Delete tierlist "${name}" ?`)) return;
+
+	deleteState(name);
+	alert(`Tierlist "${name}" deleted`);
+});
+
+
+updateStateSelector();
 generatePairsData(SYNCPAIRS);
 importState(readLocalStorage());

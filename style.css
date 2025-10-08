@@ -118,17 +118,38 @@ body {
 	position: sticky;
 }
 
-#options, #options > div { display: flex; }
+#options {
+	display: flex;
+	justify-content: space-between;
+}
+
+#options1 {
+	display: flex;
+	width: 100%;
+}
+
+#options2 {
+	display: flex;
+}
 
 #searchBar {
 	width: 100%;
 	padding: 10px;
-	margin: 0;
 	outline: none;
+	margin: 0px -2px;
+	border: 2px solid #32788C;
+}
+
+#stateselector {
+	outline: none;
+	width: 128px;
+	border: 2px solid #32788C;
+	margin: 0px -2px;
 }
 
 .btn {
 	display: flex;
+	flex: 1;
 	align-items: center;
 	justify-content: center;
 	padding: 8px 16px;
@@ -138,6 +159,10 @@ body {
 	color: #48899A;
 	cursor: pointer;
 	outline: none;
+}
+
+.btn + .btn {
+	margin-left: -2px;
 }
 
 .btn:hover {
@@ -216,6 +241,8 @@ body {
 		max-width: 96px;
 	}
 	#options { flex-wrap: wrap; justify-content: space-between; }
+
+	#options2 { width: 100%; margin-top: -2px; }
 
 	#screenshot canvas {
 		width: 80% !important;
