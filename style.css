@@ -181,6 +181,28 @@ body {
 .bi:before { font-size: 16px }
 
 
+#quicksearch {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 5px 2px;
+	gap: 5px;
+}
+
+.quickbtn {
+	padding: 4px 12px;
+	border: 2px solid #32788C;
+	background-color: #64a4b7;
+	color: white;
+	cursor: pointer;
+	outline: none;
+	border-radius: 20px;
+}
+
+.quickbtn:active {
+	scale: 0.9;
+}
+
+
 #pool {
 	display: flex;
 	flex-wrap: wrap;

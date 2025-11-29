@@ -19,7 +19,7 @@
 				<div id="options1">
 					<label class="btn bi bi-pin-angle" title="Pin images"><input type="checkbox" id="pinImagelist"></label>
 					<label class="btn bi bi-search" title="Also search in tier list"><i class="bi bi-list-columns-reverse"></i><input type="checkbox" id="searchInTierlist"></label>
-					<input type="text" id="searchBar" placeholder='Search : trainer / Pokémon / type / role / region / basestar...3star...EXstar / yyyy-mm-dd / acquisition    |    fire tech = fireANDtech / fire,tech = fireORtech / -fire = NOTfire' spellcheck="false">
+					<input type="text" id="searchBar" placeholder='Search : trainer / Pokémon / type / role / region / basestar...3star...EXstar / yyyy-mm-dd / acquisition    |    fire tech = fireANDtech / fire,tech = fireORtech / -fire = NOTfire' spellcheck="false" autofocus>
 				</div>
 				<div id="options2">
 					<button id="capture-btn" class="btn bi bi-image" title="Create an image"></button>
@@ -33,6 +33,16 @@
 					<!--<button id="loadstate-btn" class="btn bi bi-folder2-open" title="Load state"></button>-->
 					<button id="deletestate-btn" class="btn bi bi-bookmark-x" title="Delete state"></button>
 				</div>
+			</div>
+
+			<div id="quicksearch">
+				<button class="quickbtn bi bi-x" value="clearsearch"></button>
+				<button class="quickbtn" value="basestar">Default star</button>
+				<button class="quickbtn" value="exstar">6★</button>
+				<button class="quickbtn" value="-player">No MC</button>
+				<button class="quickbtn" value="masterfair">Master Fair</button>
+				<button class="quickbtn" value="pokefair">Poké Fair</button>
+				<button class="quickbtn" value="thismonth">This month</button>
 			</div>
 
 			<div id="pool"></div>  

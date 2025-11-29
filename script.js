@@ -89,8 +89,10 @@ function loadIcons(images) {
 
 
 function search() {
-	const query = document.getElementById("searchBar").value.toLowerCase().trim();
+	const query = document.getElementById("searchBar").value.replace(/  +/g,' ').toLowerCase();
 	const searchInTL = document.getElementById("searchInTierlist").checked;
+
+	document.getElementById("searchBar").value = query;
 
 	let allIcons = [...POOL.getElementsByClassName("icon")];
 
@@ -282,6 +284,31 @@ document.getElementById("close-btn").addEventListener("click", () => {
 
 
 
+document.querySelectorAll('.quickbtn').forEach(button => {
+
+	button.addEventListener('click', function() {
+		const searchbar = document.getElementById('searchBar');
+		let tosearch = this.value;
+
+		if(tosearch == "thismonth") {
+			tosearch = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`
+		}
+
+		if(searchbar.value.toLowerCase().includes(tosearch)) {
+			searchbar.value = searchbar.value.replace(tosearch, "").trim();
+		} else {
+			searchbar.value += ` ${tosearch} `;
+		}
+
+		if(tosearch == "clearsearch") { searchbar.value = ""; }
+
+		search();
+		searchbar.focus(); 
+	});
+});
+
+
+
 function exportState() {
 	const state = {
 		tiers: TIERS.map(tier => ({ id: tier.id, name: tier.name, color: tier.color })),
@@ -330,6 +357,8 @@ function importState(state) {
 				img.src = "https://pomasters.github.io/SyncPairsTracker/icons/" + fileName;
 				img.className = "icon";
 				img.dataset.tags = (IMAGES_DATA[decodeURIComponent(fileName)] || []).join(" ").toLowerCase();
+
+				img.onerror = function() { this.remove(); saveToLocalStorage(); console.log("Removed "+fileName); }
 				tierImages.appendChild(img);
 			});
 		}
@@ -380,6 +409,7 @@ document.getElementById("import-input").addEventListener("change", (event) => {
 			importState(jsonData);
 
 		} catch(e) {
+			alert("Error with the imported file")
 			console.error("Error with the imported file ", e);
 		}
 	};
