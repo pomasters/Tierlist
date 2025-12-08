@@ -184,18 +184,23 @@ body {
 #quicksearch {
 	display: flex;
 	flex-wrap: wrap;
-	padding: 5px 2px;
+	padding: 5px;
 	gap: 5px;
 }
 
 .quickbtn {
-	padding: 4px 12px;
+	padding: 2px 8px;
 	border: 2px solid #32788C;
-	background-color: #64a4b7;
-	color: white;
+	background-color: #d3eaee;
+	color: #32788C;
 	cursor: pointer;
 	outline: none;
-	border-radius: 20px;
+	border-radius: 5px;
+}
+
+.quickbtn:hover {
+	background-color: #32788c;
+	color: #d3eaee;
 }
 
 .quickbtn:active {
