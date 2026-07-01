@@ -1,9 +1,10 @@
-import { SYNCPAIRS } from "https://pomasters.github.io/SyncPairsTracker/js/syncpairs.js";
-import { EGGS } from "https://pomasters.github.io/SyncPairsTracker/js/eggs.js";
+import MASTER from "https://pomasters.github.io/SyncPairsTracker/js/syncpairs.json" with { type: "json" };
+import EGGS from "https://pomasters.github.io/SyncPairsTracker/js/eggs.json" with { type: "json" };
 import Sortable from "https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/+esm";
 import html2canvas from "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm";
 
 
+const { VERSION, SYNCPAIRS } = MASTER;
 
 const COLORS = ["#FF7F7F","#FFBF7F","#FFDF7F","#FFFF7F","#7FFF7F","#7FFFFF","#7FBFFF","#7F7FFF","#FF7FFF","#BF7FBF","#3B3B3B","#858585","#CFCFCF","#F7F7F7"];
 
